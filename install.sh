@@ -13,12 +13,10 @@ SKILLS=(
   analyze-experiment
   de-ai
   expand
-  figure-caption
   logic-check
   polish
   review-paper
   shorten
-  table-caption
 )
 
 TARGET_DIR="./.claude/skills"
