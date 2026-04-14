@@ -370,3 +370,100 @@ Before output, self-check:
 # Input
 Please analyze the attached PDF. I plan to submit to [enter your submission target, e.g. ICML 2026].
 ````
+
+---
+
+# Part II: Claude Code Skills
+
+> 💡 **How to use**: Every Part I prompt is also available as a [Claude Code Skill](https://code.claude.com/docs/en/skills). Run `/shorten`, `/polish`, and the others directly inside Claude Code instead of copy-pasting into a chat UI.
+
+## Install
+
+**Quick install** — one line, no clone required:
+
+```bash
+# Project mode (skills scoped to the current directory)
+curl -sL https://raw.githubusercontent.com/williambrach/awesome-ai-research-writing/main/install.sh | bash
+
+# Personal mode (skills available in every project)
+curl -sL https://raw.githubusercontent.com/williambrach/awesome-ai-research-writing/main/install.sh | bash -s -- --global
+```
+
+Both commands fetch the 9 `SKILL.md` files into `./.claude/skills/` (project) or `~/.claude/skills/` (global). Restart Claude Code and the slash commands become available. Re-run the same command any time to update to the latest versions.
+
+> Want to audit before running? `curl -sL https://raw.githubusercontent.com/williambrach/awesome-ai-research-writing/main/install.sh | less` first, then run it.
+
+**Clone mode** — if you want to edit the skills or contribute back:
+
+```bash
+git clone git@github.com:williambrach/awesome-ai-research-writing.git
+cd awesome-ai-research-writing
+claude
+```
+
+The `.claude/skills/` directory is picked up automatically and all 9 slash commands become available for the session.
+
+## Skills
+
+| Command               | Description                                                | Invocation     |
+| :-------------------- | :--------------------------------------------------------- | :------------- |
+| `/shorten`            | Compress a LaTeX paragraph by 5-15 words                   | Manual only    |
+| `/expand`             | Expand a LaTeX paragraph by 5-15 words                     | Manual only    |
+| `/polish`             | Deep academic polish for top-conference submissions        | Manual only    |
+| `/de-ai`              | Rewrite LLM-sounding text into natural academic English    | Manual only    |
+| `/logic-check`        | Red-line review: fatal logic / terminology / grammar only  | Auto or manual |
+| `/figure-caption`     | Chinese description to English figure caption              | Auto or manual |
+| `/table-caption`      | Chinese description to English table caption               | Auto or manual |
+| `/analyze-experiment` | Experimental data to LaTeX analysis paragraph              | Auto or manual |
+| `/review-paper`       | Strict review of a paper PDF with revision strategy        | Auto or manual |
+| `/humanizer`          | **External** — remove 29+ AI-writing patterns (based on Wikipedia's "Signs of AI writing" guide) | Auto or manual |
+
+**Manual only** skills have `disable-model-invocation: true` in their frontmatter — Claude will not spontaneously rewrite your text. You must type the slash command explicitly. The four rewrite skills use this to protect your drafts from unwanted edits.
+
+**Auto or manual** skills can be triggered either by typing the slash command or by Claude when your request clearly matches them (e.g. "do a logic check on this paragraph").
+
+**External** skills are maintained outside this repo and need a one-time install before use. `/humanizer` lives at [blader/humanizer](https://github.com/blader/humanizer) (MIT licensed) and complements `/de-ai`: use `/de-ai` for quick LaTeX-snippet touch-ups, and `/humanizer` for thorough prose rewrites with a multi-pass audit. Install it with one of the commands below and it becomes available alongside the built-in skills.
+
+**Project mode** (scoped to this repo):
+
+```bash
+mkdir -p .claude/skills/humanizer
+curl -sL https://raw.githubusercontent.com/blader/humanizer/main/SKILL.md \
+  -o .claude/skills/humanizer/SKILL.md
+```
+
+**Personal mode** (available in every project):
+
+```bash
+mkdir -p ~/.claude/skills/humanizer
+curl -sL https://raw.githubusercontent.com/blader/humanizer/main/SKILL.md \
+  -o ~/.claude/skills/humanizer/SKILL.md
+```
+
+Re-run the curl command any time to pull the latest version from upstream.
+
+## Usage
+
+Pass the target text as an argument on the same line:
+
+```
+/shorten Our proposed method achieves state-of-the-art performance on the benchmark.
+```
+
+Or invoke without arguments and paste the text on the next lines:
+
+```
+/polish
+\cite{foo} shows that the model's performance on the benchmark is better...
+```
+
+For `/review-paper`, pass the PDF path and your target venue:
+
+```
+/review-paper paper.pdf ICML 2026
+```
+
+## Customize
+
+Each skill is a single `SKILL.md` file under `.claude/skills/<name>/`. To tweak a skill, edit the file directly — Claude Code picks up the changes within the current session with no restart needed. To change a rewrite skill from manual-only to auto-invocable, delete the `disable-model-invocation: true` line from its frontmatter.
+
