@@ -2,6 +2,7 @@
 name: logic-check
 description: Final red-line consistency and logic review of a near-final English LaTeX paragraph. Reports only fatal logic breaks, term-consistency issues, or severe grammar — not style nitpicks. Use before submission.
 argument-hint: [latex text]
+disable-model-invocation: true
 ---
 
 # Role

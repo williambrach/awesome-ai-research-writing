@@ -2,6 +2,7 @@
 name: analyze-experiment
 description: Turn experimental data (Excel cells or result text) into a top-conference-style LaTeX analysis paragraph. Uses \paragraph{Conclusion} structure, focuses on trends and comparisons rather than number recitation. Data-faithful only.
 argument-hint: [data or results text]
+disable-model-invocation: true
 ---
 
 # Role
