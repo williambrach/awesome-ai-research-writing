@@ -90,7 +90,7 @@ Before output, self-check:
 
 ---
 
-## Expression Polishing (English Paper)
+## Expression Polishing
 
 ````markdown
 # Role
@@ -163,7 +163,7 @@ Please do a final consistency and logic check on the [English LaTeX snippet] I p
 
 ---
 
-## De-AI-ify (LaTeX English)
+## De-AI-ify
 
 ````markdown
 # Role
