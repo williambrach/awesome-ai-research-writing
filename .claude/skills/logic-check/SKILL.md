@@ -23,8 +23,8 @@ Please do a final consistency and logic check on the [English LaTeX snippet] I p
    - Severe grammar: is there Chinglish or grammatical structure that obscures the meaning?
 
 3. Output format:
-   - If there are no "must-fix" errors above, output in Chinese: [检测通过，无实质性问题] (Passed review, no substantive issues).
-   - If there are issues, list them concisely in Chinese as bullet points — no long essays.
+   - If there are no "must-fix" errors above, output: [Passed review, no substantive issues].
+   - If there are issues, list them concisely in English as bullet points — no long essays.
 
 # Input
 $ARGUMENTS

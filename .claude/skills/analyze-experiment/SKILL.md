@@ -28,12 +28,11 @@ Please carefully read the [Experimental Data] I provide. Mine it for key feature
    - Do not use list environments; keep pure-text paragraphs.
 
 4. Output format:
-   - Part 1 [LaTeX]: Output only the LaTeX analysis code.
+   - Output only the LaTeX analysis code.
      * Special characters must be escaped (e.g. `%`, `_`, `&`).
      * Keep math formulas as-is (preserve `$` symbols).
      * Separate distinct conclusion points with a blank line.
-   - Part 2 [Translation]: Literal Chinese back-translation (so the user can verify the data conclusions are accurate).
-   - Output nothing else beyond these two parts.
+   - Output nothing else.
 
 # Input
 $ARGUMENTS

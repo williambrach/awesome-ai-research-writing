@@ -1,6 +1,6 @@
 ---
 name: expand
-description: Slightly expand an English LaTeX paragraph (5-15 words longer) by making implicit logic explicit and strengthening transitions. No padding. Outputs expanded LaTeX + Chinese back-translation + modification log.
+description: Slightly expand an English LaTeX paragraph (5-15 words longer) by making implicit logic explicit and strengthening transitions. No padding. Outputs expanded LaTeX + modification log.
 argument-hint: [latex text]
 disable-model-invocation: true
 ---
@@ -31,9 +31,8 @@ Please apply a small expansion to the [English LaTeX snippet] I provide.
      * Language: must be fully in English.
      * Special characters must be escaped (e.g. `%`, `_`, `&`).
      * Keep math formulas as-is (preserve `$` symbols).
-   - Part 2 [Translation]: Literal Chinese back-translation (so the user can verify the newly added logic matches the original intent).
-   - Part 3 [Modification Log]: Briefly describe in Chinese what was adjusted (e.g. "added implicit conclusion XXX, inserted connective YYY").
-   - Output nothing else beyond these three parts.
+   - Part 2 [Modification Log]: Briefly describe in English what was adjusted (e.g. "added implicit conclusion XXX, inserted connective YYY").
+   - Output nothing else beyond these two parts.
 
 # Execution Protocol
 Before output, self-check:

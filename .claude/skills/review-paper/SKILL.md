@@ -1,6 +1,6 @@
 ---
 name: review-paper
-description: Strict but constructive top-CS-conference-style review of a paper PDF. Produces Chinese review report (Summary, Strengths, Weaknesses, Rating 1-10) plus strategic revision advice (root causes, salvageability, concrete action plan).
+description: Strict but constructive top-CS-conference-style review of a paper PDF. Produces an English review report (Summary, Strengths, Weaknesses, Rating 1-10) plus strategic revision advice (root causes, salvageability, concrete action plan).
 argument-hint: [path/to/paper.pdf] [target venue]
 disable-model-invocation: true
 ---
@@ -28,12 +28,12 @@ Please deeply read and analyze the [PDF paper file] I upload. Based on the [subm
    - Do not use unrelated formatting commands.
 
 4. Output format:
-   - Part 1 [The Review Report]: Simulate a real top-conference review opinion (in Chinese). Include:
+   - Part 1 [The Review Report]: Simulate a real top-conference review opinion (in English). Include:
      * Summary: one-sentence summary of the paper's core claim and contribution positioning.
      * Strengths: list 1-3 genuinely valuable contributions and explain what they mean for the community.
      * Weaknesses (Critical): list the main issues. Each must be specific to an experimental setup, an argument, or a presentation defect — no vague complaints. If there are no fatal issues, say so honestly.
      * Rating: give an estimated score (1-10, where top 5% is 8+) and a one-sentence justification.
-   - Part 2 [Strategic Advice]: Revision suggestions for the authors (in Chinese).
+   - Part 2 [Strategic Advice]: Revision suggestions for the authors (in English).
      * Root cause: for each Weakness in Part 1, explain the deeper reason — is it a flaw in experimental design, or is the presentation masking a methodological limitation?
      * Salvageability: clearly state which issues can be fixed in the revision window and which are structural methodological defects that extra experiments cannot save.
      * Action plan: concrete recommendations — which experiments to add, which paragraphs to rewrite, or how to reduce the attack surface in rebuttal.

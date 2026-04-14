@@ -1,6 +1,6 @@
 ---
 name: shorten
-description: Slightly compress an English LaTeX paragraph (5-15 words shorter) without losing information. Use for deliberate word-count trimming of academic paragraphs. Outputs shortened LaTeX + Chinese back-translation + modification log.
+description: Slightly compress an English LaTeX paragraph (5-15 words shorter) without losing information. Use for deliberate word-count trimming of academic paragraphs. Outputs shortened LaTeX + modification log.
 argument-hint: [latex text]
 disable-model-invocation: true
 ---
@@ -30,9 +30,8 @@ Please apply a small reduction to the [English LaTeX snippet] I provide.
      * Language: must be fully in English.
      * Special characters must be escaped (e.g. `%`, `_`, `&`).
      * Keep math formulas as-is (preserve `$` symbols).
-   - Part 2 [Translation]: Literal Chinese back-translation (so the user can verify all core information is preserved).
-   - Part 3 [Modification Log]: Briefly describe in Chinese what was adjusted (e.g. "removed redundant word XXX, merged YYY clause").
-   - Output nothing else beyond these three parts.
+   - Part 2 [Modification Log]: Briefly describe in English what was adjusted (e.g. "removed redundant word XXX, merged YYY clause").
+   - Output nothing else beyond these two parts.
 
 # Execution Protocol
 Before output, self-check:

@@ -57,9 +57,8 @@ Please apply a small reduction to the [English LaTeX snippet] I provide.
      * Language: must be fully in English.
      * Special characters must be escaped (e.g. `%`, `_`, `&`).
      * Keep math formulas as-is (preserve `$` symbols).
-   - Part 2 [Translation]: Literal Chinese back-translation (so the user can verify all core information is preserved).
-   - Part 3 [Modification Log]: Briefly describe in Chinese what was adjusted (e.g. "removed redundant word XXX, merged YYY clause").
-   - Output nothing else beyond these three parts.
+   - Part 2 [Modification Log]: Briefly describe in English what was adjusted (e.g. "removed redundant word XXX, merged YYY clause").
+   - Output nothing else beyond these two parts.
 
 # Execution Protocol
 Before output, self-check:
@@ -101,9 +100,8 @@ Please apply a small expansion to the [English LaTeX snippet] I provide.
      * Language: must be fully in English.
      * Special characters must be escaped (e.g. `%`, `_`, `&`).
      * Keep math formulas as-is (preserve `$` symbols).
-   - Part 2 [Translation]: Literal Chinese back-translation (so the user can verify the newly added logic matches the original intent).
-   - Part 3 [Modification Log]: Briefly describe in Chinese what was adjusted (e.g. "added implicit conclusion XXX, inserted connective YYY").
-   - Output nothing else beyond these three parts.
+   - Part 2 [Modification Log]: Briefly describe in English what was adjusted (e.g. "added implicit conclusion XXX, inserted connective YYY").
+   - Output nothing else beyond these two parts.
 
 # Execution Protocol
 Before output, self-check:
@@ -148,10 +146,8 @@ Please perform a deep polish and rewrite of the [English LaTeX snippet] I provid
    - Part 1 [LaTeX]: Output only the polished English LaTeX code.
      * Special characters must be escaped (e.g. `%`, `_`, `&`).
      * Keep math formulas as-is (preserve `$` symbols).
-   - Part 2 [Translation]: Corresponding literal Chinese back-translation.
-     * Do not annotate Chinese nouns with parenthesized English (no bilingual redundancy).
-   - Part 3 [Modification Log]: Briefly describe the main polishing points in Chinese (e.g. "optimized sentence structure, strengthened academic tone, fixed grammar errors").
-   - Output nothing else beyond these three parts.
+   - Part 2 [Modification Log]: Briefly describe the main polishing points in English (e.g. "optimized sentence structure, strengthened academic tone, fixed grammar errors").
+   - Output nothing else beyond these two parts.
 
 # Input
 [Paste your English LaTeX code here]
@@ -180,8 +176,8 @@ Please do a final consistency and logic check on the [English LaTeX snippet] I p
    - Severe grammar: is there Chinglish or grammatical structure that obscures the meaning?
 
 3. Output format:
-   - If there are no "must-fix" errors above, output in Chinese: [检测通过，无实质性问题] (Passed review, no substantive issues).
-   - If there are issues, list them concisely in Chinese as bullet points — no long essays.
+   - If there are no "must-fix" errors above, output: [Passed review, no substantive issues].
+   - If there are issues, list them concisely in English as bullet points — no long essays.
 
 # Input
 [Paste your English LaTeX code here]
@@ -221,11 +217,10 @@ Please perform a "de-AI-ify" rewrite on the [English LaTeX snippet] I provide, s
      * Language: must be fully in English.
      * Special characters must be escaped (e.g. `%`, `_`, `&`).
      * Keep math formulas as-is (preserve `$` symbols).
-   - Part 2 [Translation]: Corresponding literal Chinese back-translation.
-   - Part 3 [Modification Log]:
-     * If edits were made: briefly describe which mechanical expressions were adjusted.
-     * If nothing was changed: output in Chinese: "[检测通过] 原文表达地道自然，无明显 AI 味，建议保留。" ([Passed check] The original is idiomatic and natural, with no obvious AI feel. Keep as-is.)
-   - Output nothing else beyond these three parts.
+   - Part 2 [Modification Log]:
+     * If edits were made: briefly describe in English which mechanical expressions were adjusted.
+     * If nothing was changed: output "[Passed check] The original is idiomatic and natural, with no obvious AI feel. Keep as-is."
+   - Output nothing else beyond these two parts.
 
 # Execution Protocol
 Before output, self-check:
@@ -277,12 +272,11 @@ Please carefully read the [Experimental Data] I provide. Mine it for key feature
    - Do not use list environments; keep pure-text paragraphs.
 
 4. Output format:
-   - Part 1 [LaTeX]: Output only the LaTeX analysis code.
+   - Output only the LaTeX analysis code.
      * Special characters must be escaped (e.g. `%`, `_`, `&`).
      * Keep math formulas as-is (preserve `$` symbols).
      * Separate distinct conclusion points with a blank line.
-   - Part 2 [Translation]: Literal Chinese back-translation (so the user can verify the data conclusions are accurate).
-   - Output nothing else beyond these two parts.
+   - Output nothing else.
 
 # Input
 [Paste your Excel data or experimental result text here]
@@ -316,12 +310,12 @@ Please deeply read and analyze the [PDF paper file] I upload. Based on the [subm
    - Do not use unrelated formatting commands.
 
 4. Output format:
-   - Part 1 [The Review Report]: Simulate a real top-conference review opinion (in Chinese). Include:
+   - Part 1 [The Review Report]: Simulate a real top-conference review opinion (in English). Include:
      * Summary: one-sentence summary of the paper's core claim and contribution positioning.
      * Strengths: list 1-3 genuinely valuable contributions and explain what they mean for the community.
      * Weaknesses (Critical): list the main issues. Each must be specific to an experimental setup, an argument, or a presentation defect — no vague complaints. If there are no fatal issues, say so honestly.
      * Rating: give an estimated score (1-10, where top 5% is 8+) and a one-sentence justification.
-   - Part 2 [Strategic Advice]: Revision suggestions for the authors (in Chinese).
+   - Part 2 [Strategic Advice]: Revision suggestions for the authors (in English).
      * Root cause: for each Weakness in Part 1, explain the deeper reason — is it a flaw in experimental design, or is the presentation masking a methodological limitation?
      * Salvageability: clearly state which issues can be fixed in the revision window and which are structural methodological defects that extra experiments cannot save.
      * Action plan: concrete recommendations — which experiments to add, which paragraphs to rewrite, or how to reduce the attack surface in rebuttal.

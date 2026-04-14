@@ -34,11 +34,10 @@ Please perform a "de-AI-ify" rewrite on the [English LaTeX snippet] I provide, s
      * Language: must be fully in English.
      * Special characters must be escaped (e.g. `%`, `_`, `&`).
      * Keep math formulas as-is (preserve `$` symbols).
-   - Part 2 [Translation]: Corresponding literal Chinese back-translation.
-   - Part 3 [Modification Log]:
-     * If edits were made: briefly describe which mechanical expressions were adjusted.
-     * If nothing was changed: output in Chinese: "[检测通过] 原文表达地道自然，无明显 AI 味，建议保留。" ([Passed check] The original is idiomatic and natural, with no obvious AI feel. Keep as-is.)
-   - Output nothing else beyond these three parts.
+   - Part 2 [Modification Log]:
+     * If edits were made: briefly describe in English which mechanical expressions were adjusted.
+     * If nothing was changed: output "[Passed check] The original is idiomatic and natural, with no obvious AI feel. Keep as-is."
+   - Output nothing else beyond these two parts.
 
 # Execution Protocol
 Before output, self-check:

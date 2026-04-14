@@ -1,6 +1,6 @@
 ---
 name: polish
-description: Deep academic polish of an English LaTeX paragraph to top-conference standards (NeurIPS/ICLR/ICML). Fixes grammar, tightens phrasing, preserves LaTeX commands. Outputs polished LaTeX + Chinese back-translation + modification log.
+description: Deep academic polish of an English LaTeX paragraph to top-conference standards (NeurIPS/ICLR/ICML). Fixes grammar, tightens phrasing, preserves LaTeX commands. Outputs polished LaTeX + modification log.
 argument-hint: [latex text]
 disable-model-invocation: true
 ---
@@ -34,10 +34,8 @@ Please perform a deep polish and rewrite of the [English LaTeX snippet] I provid
    - Part 1 [LaTeX]: Output only the polished English LaTeX code.
      * Special characters must be escaped (e.g. `%`, `_`, `&`).
      * Keep math formulas as-is (preserve `$` symbols).
-   - Part 2 [Translation]: Corresponding literal Chinese back-translation.
-     * Do not annotate Chinese nouns with parenthesized English (no bilingual redundancy).
-   - Part 3 [Modification Log]: Briefly describe the main polishing points in Chinese (e.g. "optimized sentence structure, strengthened academic tone, fixed grammar errors").
-   - Output nothing else beyond these three parts.
+   - Part 2 [Modification Log]: Briefly describe the main polishing points in English (e.g. "optimized sentence structure, strengthened academic tone, fixed grammar errors").
+   - Output nothing else beyond these two parts.
 
 # Input
 $ARGUMENTS
