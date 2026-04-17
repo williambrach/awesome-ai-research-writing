@@ -1,7 +1,7 @@
 ---
 name: review-paper
 description: Strict but constructive top-CS-conference-style review of a paper PDF. Produces an English review report (Summary, Strengths, Weaknesses, Rating 1-10) plus strategic revision advice (root causes, salvageability, concrete action plan).
-argument-hint: [path/to/paper.pdf] [target venue]
+argument-hint: "[path/to/paper.pdf] [target venue]"
 disable-model-invocation: true
 ---
 
