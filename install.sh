@@ -17,6 +17,7 @@ SKILLS=(
   polish
   review-paper
   shorten
+  finalize
 )
 
 TARGET_DIR="./.claude/skills"
