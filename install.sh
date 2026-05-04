@@ -10,13 +10,15 @@ set -euo pipefail
 
 REPO_RAW="https://raw.githubusercontent.com/williambrach/awesome-ai-research-writing/main"
 SKILLS=(
-  analyze-experiment
+  claims
   de-ai
-  expand
+  finalize
   logic-check
   polish
-  review-paper
+  prune
+  redteam
   shorten
+  structure
 )
 
 TARGET_DIR="./.claude/skills"
@@ -40,7 +42,7 @@ Usage: install.sh [--project | --global]
   --global    Install into ~/.claude/skills/ (available in every project)
   --help      Show this help
 
-This installs 9 Claude Code skills: ${SKILLS[*]}
+This installs ${#SKILLS[@]} Claude Code skills: ${SKILLS[*]}
 EOF
       exit 0
       ;;
@@ -73,4 +75,4 @@ done
 
 echo
 echo "Done. Restart Claude Code (or start it in this directory for --project)"
-echo "and try: /polish, /logic-check, /figure-caption, /review-paper ..."
+echo "and try: /polish, /logic-check, /shorten, /de-ai ..."

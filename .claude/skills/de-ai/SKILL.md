@@ -1,7 +1,7 @@
 ---
 name: de-ai
 description: Rewrite mechanical LLM-generated text into natural academic English matching ACL/NeurIPS native-speaker style. Removes AI tells (delve, leverage, tapestry, em dashes, stiff transitions). Keeps the original if already natural.
-argument-hint: [latex text]
+argument-hint: latex text
 disable-model-invocation: true
 ---
 
@@ -19,11 +19,12 @@ Please perform a "de-AI-ify" rewrite on the [English LaTeX snippet] I provide, s
 2. Structural naturalization:
    - No itemization: convert all item-list content into logically coherent prose paragraphs.
    - Remove mechanical transitions: delete stiff transitions (First and foremost, It is worth noting that) and rely on natural logical flow between sentences instead.
-   - Reduce inserted symbols: minimize em dashes (—); prefer commas, parentheses, or subordinate clauses.
+   - Reduce inserted symbols: minimize em dashes (—). Do not use semicolons (;); split into separate sentences or use commas instead. Prefer commas, parentheses, or subordinate clauses.
 
 3. Formatting:
    - No emphasis formatting: no bold or italics for emphasis in the body. Academic writing expresses emphasis through sentence structure.
    - Keep LaTeX clean: do not introduce unrelated formatting commands.
+   - No new LaTeX styling commands: do not introduce `\emph{}`, `\textit{}`, `\textbf{}`, `\texttt{}`, `\underline{}`, or similar formatting macros. If they already appear in the input, preserve them as-is. Always preserve structural/reference commands (`\cite{}`, `\ref{}`, `\eg`, `\ie`, math, etc.).
 
 4. Modification threshold (key):
    - Less is more: if the input is already natural, idiomatic, and free of AI tells, keep the original. Do not edit for the sake of editing.
