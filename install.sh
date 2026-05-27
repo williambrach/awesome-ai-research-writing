@@ -19,6 +19,7 @@ SKILLS=(
   redteam
   shorten
   structure
+  validate-bib
 )
 
 TARGET_DIR="./.claude/skills"
