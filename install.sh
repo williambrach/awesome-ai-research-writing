@@ -22,8 +22,15 @@ SKILLS=(
   validate-bib
 )
 
+# External skills pulled from their upstream repos (not vendored here).
+# Format: "<skill-name>=<raw SKILL.md url>"
+EXTERNAL_SKILLS=(
+  "humanize-sk=https://raw.githubusercontent.com/vikiival/humanize-sk/main/SKILL.md"
+)
+
 TARGET_DIR="./.claude/skills"
 SCOPE_LABEL="project (./.claude/skills)"
+INSTALL_EXTERNAL=1
 
 for arg in "$@"; do
   case "$arg" in
@@ -35,15 +42,19 @@ for arg in "$@"; do
       TARGET_DIR="./.claude/skills"
       SCOPE_LABEL="project (./.claude/skills)"
       ;;
+    --no-external)
+      INSTALL_EXTERNAL=0
+      ;;
     -h|--help)
       cat <<EOF
-Usage: install.sh [--project | --global]
+Usage: install.sh [--project | --global] [--no-external]
 
-  --project   Install into ./.claude/skills/ (default, current directory)
-  --global    Install into ~/.claude/skills/ (available in every project)
-  --help      Show this help
+  --project      Install into ./.claude/skills/ (default, current directory)
+  --global       Install into ~/.claude/skills/ (available in every project)
+  --no-external  Skip external skills (installed by default): ${EXTERNAL_SKILLS[*]%%=*}
+  --help         Show this help
 
-This installs ${#SKILLS[@]} Claude Code skills: ${SKILLS[*]}
+This installs $(( ${#SKILLS[@]} + ${#EXTERNAL_SKILLS[@]} )) Claude Code skills: ${SKILLS[*]} humanize-sk
 EOF
       exit 0
       ;;
@@ -60,7 +71,11 @@ command -v curl >/dev/null 2>&1 || {
   exit 1
 }
 
-echo "Installing ${#SKILLS[@]} skills to $SCOPE_LABEL"
+TOTAL=${#SKILLS[@]}
+if [ "$INSTALL_EXTERNAL" -eq 1 ]; then
+  TOTAL=$(( TOTAL + ${#EXTERNAL_SKILLS[@]} ))
+fi
+echo "Installing $TOTAL skills to $SCOPE_LABEL"
 echo
 
 for skill in "${SKILLS[@]}"; do
@@ -73,6 +88,20 @@ for skill in "${SKILLS[@]}"; do
     exit 1
   fi
 done
+
+if [ "$INSTALL_EXTERNAL" -eq 1 ]; then
+for entry in "${EXTERNAL_SKILLS[@]}"; do
+  skill="${entry%%=*}"
+  url="${entry#*=}"
+  mkdir -p "$TARGET_DIR/$skill"
+  if curl -fsSL "$url" -o "$TARGET_DIR/$skill/SKILL.md"; then
+    echo "  installed  /$skill (external)"
+  else
+    echo "  FAILED     /$skill" >&2
+    exit 1
+  fi
+done
+fi
 
 echo
 echo "Done. Restart Claude Code (or start it in this directory for --project)"

@@ -27,4 +27,14 @@ Both commands fetch the `SKILL.md` files into `./.claude/skills/` (project) or `
 | `/prune`       | Paragraph-by-paragraph cut-test: keep / tighten / move-to-appendix / cut          | have to cut paragraphs but cannot decide which                   |
 | `/redteam`     | Hostile pre-submission audit of claims and evidence with severity-tagged findings | worry a reviewer will find a hole you missed                     |
 
-All skills have `disable-model-invocation: true` in their frontmatter — Claude will not spontaneously rewrite your text. You must type the slash command explicitly. This protects your drafts from unwanted edits.
+## External skills
+
+These are pulled from their upstream repos at install time (git submodules here, not vendored copies). They install by default; pass `--no-external` to the install command to skip them:
+
+| Command        | Description                                                       | Source                                                             |
+| :------------- | :---------------------------------------------------------------- | :----------------------------------------------------------------- |
+| `/humanize-sk` | Rewrite AI-generated **Slovak** text to sound natural and human   | [vikiival/humanize-sk](https://github.com/vikiival/humanize-sk)    |
+
+External skills follow their upstream conventions, so the note below may not apply to them.
+
+All skills in this repo have `disable-model-invocation: true` in their frontmatter — Claude will not spontaneously rewrite your text. You must type the slash command explicitly. This protects your drafts from unwanted edits.

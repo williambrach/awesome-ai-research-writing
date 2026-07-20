@@ -1,0 +1,3 @@
+[submodule ".claude/skills/humanize-sk"]
+	path = .claude/skills/humanize-sk
+	url = https://github.com/vikiival/humanize-sk
