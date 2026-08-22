@@ -23,9 +23,10 @@ SKILLS=(
 )
 
 # External skills pulled from their upstream repos (not vendored here).
-# Format: "<skill-name>=<raw SKILL.md url>"
+# Format: "<skill-name>|<raw base url>|<space-separated files>"
 EXTERNAL_SKILLS=(
-  "humanize-sk=https://raw.githubusercontent.com/vikiival/humanize-sk/main/SKILL.md"
+  "humanize-sk|https://raw.githubusercontent.com/vikiival/humanize-sk/main|SKILL.md"
+  "no-ai-slop|https://raw.githubusercontent.com/petergyang/no-ai-slop/main/skills/no-ai-slop|SKILL.md eval.md"
 )
 
 TARGET_DIR="./.claude/skills"
@@ -51,10 +52,10 @@ Usage: install.sh [--project | --global] [--no-external]
 
   --project      Install into ./.claude/skills/ (default, current directory)
   --global       Install into ~/.claude/skills/ (available in every project)
-  --no-external  Skip external skills (installed by default): ${EXTERNAL_SKILLS[*]%%=*}
+  --no-external  Skip external skills (installed by default): ${EXTERNAL_SKILLS[*]%%|*}
   --help         Show this help
 
-This installs $(( ${#SKILLS[@]} + ${#EXTERNAL_SKILLS[@]} )) Claude Code skills: ${SKILLS[*]} humanize-sk
+This installs $(( ${#SKILLS[@]} + ${#EXTERNAL_SKILLS[@]} )) Claude Code skills: ${SKILLS[*]} ${EXTERNAL_SKILLS[*]%%|*}
 EOF
       exit 0
       ;;
@@ -91,15 +92,18 @@ done
 
 if [ "$INSTALL_EXTERNAL" -eq 1 ]; then
 for entry in "${EXTERNAL_SKILLS[@]}"; do
-  skill="${entry%%=*}"
-  url="${entry#*=}"
+  skill="${entry%%|*}"
+  rest="${entry#*|}"
+  base_url="${rest%%|*}"
+  files="${rest#*|}"
   mkdir -p "$TARGET_DIR/$skill"
-  if curl -fsSL "$url" -o "$TARGET_DIR/$skill/SKILL.md"; then
-    echo "  installed  /$skill (external)"
-  else
-    echo "  FAILED     /$skill" >&2
-    exit 1
-  fi
+  for file in $files; do
+    if ! curl -fsSL "$base_url/$file" -o "$TARGET_DIR/$skill/$file"; then
+      echo "  FAILED     /$skill ($file)" >&2
+      exit 1
+    fi
+  done
+  echo "  installed  /$skill (external)"
 done
 fi
 

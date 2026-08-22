@@ -19,7 +19,7 @@ Both commands fetch the `SKILL.md` files into `./.claude/skills/` (project) or `
 | :------------- | :-------------------------------------------------------------------------------- | :--------------------------------------------------------------- |
 | `/shorten`     | Compress a LaTeX paragraph by 5-15 words                                          | are a few words over the page limit on a paragraph               |
 | `/polish`      | Deep academic polish for top-conference submissions                               | want NeurIPS-grade grammar and phrasing on a paragraph           |
-| `/de-ai`       | Rewrite LLM-sounding text into natural academic English                           | read it back and it sounds like ChatGPT wrote it                 |
+| `/de-ai`       | Rewrite LLM-sounding text into natural academic English (word + pattern level)    | read it back and it sounds like ChatGPT wrote it                 |
 | `/logic-check` | Red-line review: fatal logic / terminology / grammar only                         | want only fatal issues flagged, no prose changes                 |
 | `/finalize`    | Pipeline: logic-check → polish → de-ai on a near-final paragraph                  | have a near-final paragraph you want submission-ready in one go  |
 | `/claims`      | Compress research findings into 1-3 specific claims with strength labels          | have results but no clear story yet                              |
@@ -31,9 +31,10 @@ Both commands fetch the `SKILL.md` files into `./.claude/skills/` (project) or `
 
 These are pulled from their upstream repos at install time (git submodules here, not vendored copies). They install by default; pass `--no-external` to the install command to skip them:
 
-| Command        | Description                                                       | Source                                                             |
-| :------------- | :---------------------------------------------------------------- | :----------------------------------------------------------------- |
-| `/humanize-sk` | Rewrite AI-generated **Slovak** text to sound natural and human   | [vikiival/humanize-sk](https://github.com/vikiival/humanize-sk)    |
+| Command        | Description                                                                      | Source                                                              |
+| :------------- | :-------------------------------------------------------------------------------- | :------------------------------------------------------------------ |
+| `/humanize-sk` | Rewrite AI-generated **Slovak** text to sound natural and human                  | [vikiival/humanize-sk](https://github.com/vikiival/humanize-sk)     |
+| `/no-ai-slop`  | General-purpose de-slop editor for non-paper writing (posts, emails, blogs)      | [petergyang/no-ai-slop](https://github.com/petergyang/no-ai-slop)   |
 
 External skills follow their upstream conventions, so the note below may not apply to them.
 
