@@ -27,6 +27,9 @@ SKILLS=(
 # External skills pulled from their upstream repos (not vendored here).
 # Format: "<skill-name>|<raw base url>|<space-separated files>"
 EXTERNAL_SKILLS=(
+  "asd-ste100|https://raw.githubusercontent.com/danyuchn/asd-ste100-skill/master|SKILL.md LICENSE README.md references/writing-rules.md examples/before-after.md examples/linter-edge-cases.md scripts/ste-lint.py"
+)
+CLAUDE_EXTERNAL_SKILLS=(
   "humanize-sk|https://raw.githubusercontent.com/vikiival/humanize-sk/main|SKILL.md"
   "no-ai-slop|https://raw.githubusercontent.com/petergyang/no-ai-slop/main/skills/no-ai-slop|SKILL.md eval.md"
 )
@@ -58,12 +61,12 @@ Usage: install.sh [--claude | --codex | --chatgpt] [--project | --global] [--no-
   --chatgpt      Download the ChatGPT prompt bundle to ./chatgpt/ for upload
   --project      Install into ./.claude/skills/ or ./.agents/skills/ (default)
   --global       Install into ~/.claude/skills/ or ~/.agents/skills/
-  --no-external  Skip upstream Claude skills: humanize-sk, no-ai-slop
+  --no-external  Skip upstream skills (including asd-ste100 on both platforms)
   --help         Show this help
 
 First-party skills: ${SKILLS[*]}
-External skills are installed by default for Claude only. The OpenAI editions
-contain the ${#SKILLS[@]} first-party skills. ChatGPT uploads do not have a --global mode.
+External skills: asd-ste100 for Claude and Codex; humanize-sk and no-ai-slop for Claude.
+The ChatGPT bundle contains only the ${#SKILLS[@]} first-party skills and has no --global mode.
 Run from a clone to install local files; curl-piped installs fetch from GitHub.
 EOF
       exit 0
@@ -78,6 +81,7 @@ done
 
 case "$PLATFORM" in
   claude)
+    EXTERNAL_SKILLS+=("${CLAUDE_EXTERNAL_SKILLS[@]}")
     SOURCE_DIR=".claude/skills"
     TARGET_DIR="./.claude/skills"
     [ "$SCOPE" != "global" ] || TARGET_DIR="$HOME/.claude/skills"
@@ -86,7 +90,6 @@ case "$PLATFORM" in
     SOURCE_DIR="codex/skills"
     TARGET_DIR="./.agents/skills"
     [ "$SCOPE" != "global" ] || TARGET_DIR="$HOME/.agents/skills"
-    INSTALL_EXTERNAL=0
     ;;
   chatgpt)
     if [ "$SCOPE" = "global" ]; then
@@ -170,12 +173,15 @@ if [ "$INSTALL_EXTERNAL" -eq 1 ]; then
     rest="${entry#*|}"
     base_url="${rest%%|*}"
     files="${rest#*|}"
-    mkdir -p "$STAGING_DIR/$skill"
     for file in $files; do
+      mkdir -p "$(dirname "$STAGING_DIR/$skill/$file")"
       if ! curl -fsSL "$base_url/$file" -o "$STAGING_DIR/$skill/$file"; then
         echo "  FAILED     /$skill ($file)" >&2
         exit 1
       fi
+      case "$file" in
+        scripts/*.py|scripts/*.sh) chmod +x "$STAGING_DIR/$skill/$file" ;;
+      esac
     done
   done
 fi

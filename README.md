@@ -34,12 +34,13 @@ Personal mode:
 curl -fsSL https://raw.githubusercontent.com/williambrach/awesome-ai-research-writing/main/install.sh | bash -s -- --codex --global
 ```
 
-These install the ten first-party skills from [`codex/skills/`](codex/skills/) into `./.agents/skills/` or `~/.agents/skills/`, including invocation policies and bibliography helper scripts. Open Codex in your project, then use:
+These install the ten first-party skills from [`codex/skills/`](codex/skills/) into `./.agents/skills/` or `~/.agents/skills/`, including invocation policies and bibliography helper scripts. They also fetch the external `asd-ste100` skill by default; pass `--no-external` to skip it. Open Codex in your project, then use:
 
 ```text
 $polish Improve this paragraph: ...
 $finalize Make this LaTeX paragraph submission-ready: ...
 $validate-bib references.bib
+$asd-ste100 Clarify this tool description: ...
 ```
 
 Codex discovers skills in these locations and supports `$skill-name` invocation. Restart it if new skills do not appear. See the [official OpenAI skills documentation](https://learn.chatgpt.com/docs/build-skills).
@@ -105,14 +106,17 @@ Use `/name` in Claude Code, `$name` in Codex, or `Use name on ...` with the Chat
 
 The nine editing skills require explicit invocation. Claude uses `disable-model-invocation: true`; the Codex edition preserves that behavior with `policy.allow_implicit_invocation: false` in each skill's `agents/openai.yaml`. `validate-bib` retains its existing automatic matching for bibliography-check requests. The ChatGPT project instructions apply only the workflow you request.
 
-## External skills (Claude Code)
+## External skills
 
-The Claude installer also fetches these upstream skills by default. Pass `--no-external` to skip them. They are not included in the Codex edition or ChatGPT bundle; their instructions and compatibility are maintained upstream.
+The installers fetch the upstream skills below by default for the listed platforms. Pass `--no-external` to skip them. External skills are not included in the ChatGPT bundle; their instructions are maintained upstream.
 
-| Command | Description | Source |
-| :------ | :---------- | :----- |
-| `/humanize-sk` | Rewrite AI-generated Slovak text to sound natural | [vikiival/humanize-sk](https://github.com/vikiival/humanize-sk) |
-| `/no-ai-slop` | General-purpose editing for posts, emails, and blogs | [petergyang/no-ai-slop](https://github.com/petergyang/no-ai-slop) |
+| Skill | Platforms | Description | Source |
+| :---- | :-------- | :---------- | :----- |
+| `asd-ste100` | Claude Code, Codex | Clarify technical English, tool descriptions, error messages, and agent instructions using Simplified Technical English principles | [danyuchn/asd-ste100-skill](https://github.com/danyuchn/asd-ste100-skill) |
+| `humanize-sk` | Claude Code | Rewrite AI-generated Slovak text to sound natural | [vikiival/humanize-sk](https://github.com/vikiival/humanize-sk) |
+| `no-ai-slop` | Claude Code | General-purpose editing for posts, emails, and blogs | [petergyang/no-ai-slop](https://github.com/petergyang/no-ai-slop) |
+
+Use `/asd-ste100` in Claude Code or `$asd-ste100` in Codex. The installer includes its rules, examples, license, and Python linter. The linter requires Python 3 and checks structural patterns; it does not certify compliance with the official ASD-STE100 dictionary. The upstream skill supports automatic matching for requests to simplify or disambiguate technical English.
 
 ## Maintaining the editions
 

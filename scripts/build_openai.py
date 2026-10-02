@@ -40,7 +40,7 @@ def build_outputs():
     outputs = {}
     sections = []
     # A local Claude install can add upstream skills beside our source skills.
-    external = {"humanize-sk", "no-ai-slop"}
+    external = {"asd-ste100", "humanize-sk", "no-ai-slop"}
     sources = sorted(path for path in SOURCE.glob("*/SKILL.md") if path.parent.name not in external)
     names = []
     for source in sources:

@@ -3,6 +3,7 @@
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -15,6 +16,10 @@ SKILLS = {
     "redteam", "shorten", "structure", "validate-bib",
 }
 HELPERS = ("check-bib-usage.sh", "prune-unused-bib.sh", "merge-reports.py")
+STE_FILES = (
+    "SKILL.md", "LICENSE", "README.md", "references/writing-rules.md",
+    "examples/before-after.md", "examples/linter-edge-cases.md", "scripts/ste-lint.py",
+)
 
 
 class InstallTests(unittest.TestCase):
@@ -56,6 +61,8 @@ elif url.startswith("https://raw.githubusercontent.com/vikiival/humanize-sk/main
     destination.write_text("upstream humanize-sk fixture\\n")
 elif url.startswith("https://raw.githubusercontent.com/petergyang/no-ai-slop/main/skills/no-ai-slop/"):
     destination.write_text("upstream no-ai-slop fixture\\n")
+elif url.startswith("https://raw.githubusercontent.com/danyuchn/asd-ste100-skill/master/"):
+    destination.write_text("upstream asd-ste100 fixture: " + url.rsplit("/master/", 1)[1] + "\\n")
 else:
     sys.exit(22)
 ''', encoding="utf-8")
@@ -73,8 +80,11 @@ else:
             self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
         return result
 
-    def assert_skills(self, directory, platform):
-        self.assertEqual({p.parent.name for p in directory.glob("*/SKILL.md")}, SKILLS)
+    def assert_skills(self, directory, platform, external=False):
+        expected_skills = SKILLS | ({"asd-ste100"} if external else set())
+        if external and platform == "claude":
+            expected_skills |= {"humanize-sk", "no-ai-slop"}
+        self.assertEqual({p.parent.name for p in directory.glob("*/SKILL.md")}, expected_skills)
         source = ROOT / ("codex/skills" if platform == "codex" else ".claude/skills")
         for name in SKILLS:
             self.assertEqual((directory / name / "SKILL.md").read_bytes(), (source / name / "SKILL.md").read_bytes())
@@ -86,15 +96,22 @@ else:
             path = directory / "validate-bib" / helper
             self.assertTrue(os.access(path, os.X_OK), helper)
             self.assertEqual(path.read_bytes(), (source / "validate-bib" / helper).read_bytes())
+        if external:
+            for name in STE_FILES:
+                self.assertEqual(
+                    (directory / "asd-ste100" / name).read_text(),
+                    "upstream asd-ste100 fixture: " + name + "\n",
+                )
+            self.assertTrue(os.access(directory / "asd-ste100/scripts/ste-lint.py", os.X_OK))
 
     def test_local_codex_project_install_and_update(self):
-        self.install("--codex")
+        self.install("--codex", "--no-external")
         target = self.project / ".agents/skills"
         self.assert_skills(target, "codex")
         (target / "polish/SKILL.md").write_text("older version")
         unrelated = target / "unrelated.txt"
         unrelated.write_text("keep")
-        self.install("--codex")
+        self.install("--codex", "--no-external")
         self.assert_skills(target, "codex")
         self.assertEqual(unrelated.read_text(), "keep")
         self.assertFalse((self.root / "downloads.txt").exists())
@@ -106,7 +123,7 @@ else:
         self.assertFalse((self.project / ".agents").exists())
 
     def test_piped_codex_installs_all_resources_without_external_downloads(self):
-        self.install("--codex", piped=True)
+        self.install("--codex", "--no-external", piped=True)
         self.assert_skills(self.project / ".agents/skills", "codex")
         downloads = (self.root / "downloads.txt").read_text().splitlines()
         self.assertEqual(len(downloads), 23)
@@ -115,23 +132,48 @@ else:
     def test_piped_claude_includes_upstream_resources_by_default(self):
         self.install(piped=True)
         target = self.project / ".claude/skills"
-        self.assertEqual(len(list(target.glob("*/SKILL.md"))), 12)
+        self.assert_skills(target, "claude", external=True)
         self.assertTrue((target / "no-ai-slop/eval.md").is_file())
         self.assertTrue((target / "humanize-sk/SKILL.md").is_file())
         for helper in HELPERS:
             self.assertTrue(os.access(target / "validate-bib" / helper, os.X_OK))
 
+    def test_local_and_piped_codex_include_ste_only(self):
+        for piped in (False, True):
+            with self.subTest(piped=piped):
+                result = self.install("--codex", piped=piped)
+                self.assertIn("Installing 11 codex skills", result.stdout)
+                self.assert_skills(self.project / ".agents/skills", "codex", external=True)
+        downloads = (self.root / "downloads.txt").read_text()
+        self.assertNotIn("humanize-sk", downloads)
+        self.assertNotIn("no-ai-slop", downloads)
+
+    def test_local_claude_includes_upstream_resources_by_default(self):
+        result = self.install()
+        self.assertIn("Installing 13 claude skills", result.stdout)
+        self.assert_skills(self.project / ".claude/skills", "claude", external=True)
+
+    def test_no_external_skips_upstream_for_both_platforms(self):
+        for platform in ("claude", "codex"):
+            for piped in (False, True):
+                with self.subTest(platform=platform, piped=piped):
+                    self.install("--" + platform, "--no-external", piped=piped)
+                    directory = ".agents/skills" if platform == "codex" else ".claude/skills"
+                    self.assert_skills(self.project / directory, platform)
+        downloads = (self.root / "downloads.txt").read_text().splitlines()
+        self.assertTrue(all("/awesome-ai-research-writing/" in url for url in downloads))
+
     def test_global_flags_are_order_independent(self):
-        for args in (("--codex", "--global"), ("--global", "--codex"), ("--claude", "-g", "--no-external")):
+        for args in (("--codex", "--global"), ("--global", "--codex"), ("--claude", "-g")):
             with self.subTest(args=args):
                 self.install(*args)
-        self.assert_skills(self.home / ".agents/skills", "codex")
-        self.assert_skills(self.home / ".claude/skills", "claude")
+        self.assert_skills(self.home / ".agents/skills", "codex", external=True)
+        self.assert_skills(self.home / ".claude/skills", "claude", external=True)
         self.assertEqual(list(self.project.iterdir()), [])
 
     def test_project_flag_overrides_global(self):
         self.install("--global", "--codex", "-p")
-        self.assert_skills(self.project / ".agents/skills", "codex")
+        self.assert_skills(self.project / ".agents/skills", "codex", external=True)
         self.assertEqual(list(self.home.iterdir()), [])
 
     def test_chatgpt_local_and_piped_exports(self):
@@ -171,6 +213,32 @@ else:
         self.env["INSTALL_TEST_FAIL"] = "/research-writing.md"
         self.install("--chatgpt", piped=True, success=False)
         self.assertEqual((target / "PROJECT_INSTRUCTIONS.md").read_text(), "custom instructions")
+
+    def test_external_resource_failure_preserves_existing_installation(self):
+        for platform, directory in (("codex", ".agents/skills"), ("claude", ".claude/skills")):
+            with self.subTest(platform=platform):
+                self.env.pop("INSTALL_TEST_FAIL", None)
+                self.install("--" + platform)
+                target = self.project / directory
+                (target / "claims/SKILL.md").write_text("user's existing version")
+                (target / "asd-ste100/SKILL.md").write_text("older STE skill")
+                before = {p.relative_to(target): p.read_bytes() for p in target.rglob("*") if p.is_file()}
+                self.env["INSTALL_TEST_FAIL"] = "/scripts/ste-lint.py"
+                result = self.install("--" + platform, success=False)
+                self.assertIn("asd-ste100 (scripts/ste-lint.py)", result.stderr)
+                after = {p.relative_to(target): p.read_bytes() for p in target.rglob("*") if p.is_file()}
+                self.assertEqual(before, after)
+
+    def test_claude_install_in_clone_keeps_generated_packages_current(self):
+        clone = self.project
+        for directory in (".claude", "codex", "chatgpt", "scripts"):
+            shutil.copytree(ROOT / directory, clone / directory, symlinks=True)
+        self.install()
+        result = subprocess.run(
+            [sys.executable, str(clone / "scripts/build_openai.py"), "--check"],
+            text=True, capture_output=True,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     def test_installed_bibliography_helpers_work_from_paper_project(self):
         self.install("--codex")
